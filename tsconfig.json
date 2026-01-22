@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "src/app/playground/_components/questions-form.tss"  ],
+, "src/app/playground/components/questions-form.tss"  ],
   "exclude": ["node_modules"]
 }
