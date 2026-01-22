@@ -1,0 +1,115 @@
+{
+  "project": {
+    "businessGoals": [
+      "Create an AI chatbot that turns a requirements interview into a complete, standardized SpecKit"
+    ],
+    "technology": {
+      "frontend": ["Next.js"],
+      "backend": ["Next.js"],
+      "database": [],
+      "integrations": ["OpenAI API"],
+      "hosting": [],
+      "other": []
+    }
+  },
+  "missingInformation": {
+    "isComplete": false,
+    "questionsToAsk": [
+      {
+        "area": "businessGoals",
+        "question": "What does “standardized SpecKit” mean in this context—do you have an existing template or JSON schema to conform to?",
+        "whyItMatters": "A definitive structure is required to implement the generation logic and to validate the JSON output."
+      },
+      {
+        "area": "businessGoals",
+        "question": "Who are the primary users (e.g., BAs, PMs, founders) and what problem metrics define success (e.g., time to first draft, completeness score)?",
+        "whyItMatters": "Guides UX scope and acceptance tests tied to measurable outcomes."
+      },
+      {
+        "area": "functionalRequirements",
+        "question": "How is the interview transcript formed—should the engine use the live chat history as input, or will users upload/provide a separate transcript?",
+        "whyItMatters": "Determines integration points between the chat UI and the generation engine."
+      },
+      {
+        "area": "functionalRequirements",
+        "question": "Should users be able to review and edit the generated SpecKit in the UI before finalizing?",
+        "whyItMatters": "Impacts UI scope and workflow beyond simple generation."
+      },
+      {
+        "area": "functionalRequirements",
+        "question": "Do you need export/download options (e.g., .md and .json files) or is in-app display/return via API sufficient?",
+        "whyItMatters": "Affects UI features and API response design."
+      },
+      {
+        "area": "functionalRequirements",
+        "question": "Is streaming of model responses required in the chat UI?",
+        "whyItMatters": "Influences frontend rendering and backend API design for partial tokens."
+      },
+      {
+        "area": "functionalRequirements",
+        "question": "Are there any constraints on maximum interview length or transcript size?",
+        "whyItMatters": "Impacts prompt/chunking strategy and request limits."
+      },
+      {
+        "area": "functionalRequirements",
+        "question": "Should the system support regenerating or updating the SpecKit as the interview continues?",
+        "whyItMatters": "Defines when and how generation is triggered and updated."
+      },
+      {
+        "area": "functionalRequirements",
+        "question": "Are there quality checks or validation rules for what constitutes a ‘complete’ SpecKit?",
+        "whyItMatters": "Enables objective acceptance criteria for output completeness."
+      },
+      {
+        "area": "technology",
+        "question": "Which OpenAI model(s) should be used and with what parameters (e.g., temperature, max tokens)?",
+        "whyItMatters": "Model choice affects quality, latency, and cost; parameters influence consistency."
+      },
+      {
+        "area": "technology",
+        "question": "How should secrets (OpenAI API key) be managed in the Next.js environment?",
+        "whyItMatters": "Security and deployment configuration."
+      },
+      {
+        "area": "technology",
+        "question": "Do you require serverless deployment (e.g., Vercel) or a custom Node hosting environment?",
+        "whyItMatters": "Impacts architecture decisions and performance characteristics."
+      },
+      {
+        "area": "technology",
+        "question": "Since no database is needed, how should session/chat history be handled (client-side only, in-memory on server, or not preserved)?",
+        "whyItMatters": "Defines state management and user experience for multi-turn conversations."
+      },
+      {
+        "area": "technology",
+        "question": "Do you need observability (logging, tracing, error monitoring) and analytics? If yes, which tools are preferred?",
+        "whyItMatters": "Affects non-functional requirements and operational readiness."
+      },
+      {
+        "area": "general",
+        "question": "Are there authentication/authorization requirements or is the tool anonymous/public?",
+        "whyItMatters": "Security scope and access control."
+      },
+      {
+        "area": "general",
+        "question": "What accessibility, localization, and branding/UX guidelines should be followed?",
+        "whyItMatters": "Ensures usability and compliance with organizational standards."
+      },
+      {
+        "area": "general",
+        "question": "Are there legal/compliance constraints (PII handling, data retention, GDPR/CCPA)?",
+        "whyItMatters": "Impacts data handling, logging, and UI disclosures."
+      },
+      {
+        "area": "general",
+        "question": "What are the target timeline, environments (dev/stage/prod), and release criteria?",
+        "whyItMatters": "Planning and delivery management."
+      }
+    ]
+  },
+  "assumptions": [
+    "MVP scope focuses on a simple chat UI and the SpecKit generation engine as stated.",
+    "OpenAI will be the LLM provider accessed via API.",
+    "No persistent database will be used unless later requirements introduce one."
+  ]
+}
