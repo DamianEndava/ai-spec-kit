@@ -1,3 +1,5 @@
+export const REQUIREMENT_LOCAL_STORAGE_KEY = "requirement_payload";
+
 export const SCHEMA_OPEN_AI = {
   type: "object",
   additionalProperties: false,
