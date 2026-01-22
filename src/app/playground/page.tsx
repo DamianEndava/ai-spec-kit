@@ -1,10 +1,13 @@
-import QuestionsForm from "@/app/playground/_components/questions-form";
+import AnalyzeForm from "./components/AnalyzeForm";
+import RequirementsForm from "./components/RequirementsForm";
 
 export default function Page() {
   return (
     <>
       <h1>Playground</h1>
-      <QuestionsForm />
+      <RequirementsForm />
+      <h1>-----------------------</h1>
+      <AnalyzeForm />
     </>
   );
 }
