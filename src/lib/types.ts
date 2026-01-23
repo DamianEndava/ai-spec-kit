@@ -26,3 +26,11 @@ export interface SpecResponse {
   questionsToAsk: Question[];
   aswerQuestion?: AnsweredQuestion;
 }
+
+export interface ChatMessage {
+  id: string;
+  questionId: string;
+  content: string;
+  sender: "user" | "ai";
+  timestamp: Date;
+}
