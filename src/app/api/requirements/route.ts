@@ -1,10 +1,32 @@
-import {
-  CATEGORY_GUIDELINES,
-  getRequirementsUserTextPrompt,
-  REQUIREMENTS_SYSTEM_PROMPT,
-} from "@/lib/constants";
-import { SCHEMA_OPEN_AI } from "@/lib/constants";
+import { CATEGORY_GUIDELINES, SCHEMA_OPEN_AI } from "@/lib/constants";
 import OpenAI from "openai";
+
+export const REQUIREMENTS_SYSTEM_PROMPT =
+  "You are a senior Business Analyst in a software development team. " +
+  "Convert unstructured requirements into a structured spec draft JSON matching the schema. " +
+  "Do NOT invent facts. If unknown: context='', arrays=[]. " +
+  "Generate questionsToAsk based on category guidelines and missing/ambiguous info. " +
+  "Rules for questionsToAsk: " +
+  "(1) Ask only questions that are NOT answered in the input text. " +
+  "(2) Questions must be specific and actionable (no generic 'please clarify'). " +
+  "(3) Ensure IDs are unique and follow q-<category>-<number>, numbering starts at 1 per category. " +
+  "(4) Add 1 question per category IF there are meaningful gaps; otherwise 0 for that category.";
+
+export function getRequirementsUserTextPrompt(
+  requirementsText: any,
+  categoryGuidelines: any,
+): string {
+  return (
+    "Unstructured requirements:\n" +
+    requirementsText +
+    "\n\nCategory guidelines for generating questions (shortDescription + mustHave checklist):\n" +
+    JSON.stringify(categoryGuidelines, null, 2) +
+    "\n\nOutput requirements:\n" +
+    "- Return ONLY valid JSON matching the schema.\n" +
+    "- Fill specDraft only with information supported by the input.\n" +
+    "- For missing/unclear items, leave specDraft fields empty and generate questionsToAsk.\n"
+  );
+}
 
 const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
