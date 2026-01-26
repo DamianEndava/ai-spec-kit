@@ -5,7 +5,7 @@ interface TechStack {
   infra: string[];
 }
 
-interface SpecDraft {
+export interface SpecDraft {
   context: string;
   businessGoals: string[];
   techStack: TechStack;
