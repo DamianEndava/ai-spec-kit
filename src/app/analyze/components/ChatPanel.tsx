@@ -1,6 +1,13 @@
 "use client";
 
-import { Send, Copy, User, Sparkles } from "lucide-react";
+import {
+  Send,
+  Copy,
+  User,
+  Sparkles,
+  AlertCircle,
+  RotateCw,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ChatMessage, SpecResponse } from "@/lib/types";
 import { Dispatch, SetStateAction, useState } from "react";
@@ -116,6 +123,25 @@ const ChatPanel = ({
             </div>
           );
         })}
+        {error && (
+          <div className="mt-2 w-10/12 flex items-start justify-between gap-3 rounded-md border border-destructive/50 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+            <div className="flex items-start gap-2">
+              <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
+              <span>
+                Something went wrong while loading the response. Please try
+                again.
+              </span>
+            </div>
+
+            <button
+              onClick={() => console.log("reload")}
+              className="flex items-center gap-1 rounded-md px-2 py-1 text-sm font-medium text-destructive hover:bg-destructive/20 transition"
+            >
+              <RotateCw className="h-4 w-4" />
+              Reload
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Input Area */}

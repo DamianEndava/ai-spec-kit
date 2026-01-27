@@ -12,13 +12,13 @@ const Navbar = () => {
           >
             <Image
               src="/logo_dark.png"
-              alt="Ai Spec Kit"
+              alt="AI Spec Kit"
               width={530}
               height={90}
               className="h-6 w-auto"
             />
             <span className="text-xl font-semibold text-foreground">
-              Ai Spec Kit
+              AI Spec Kit
             </span>
           </Link>
 
