@@ -18,7 +18,7 @@ const Footer = () => {
               className="h-6 w-auto"
             />
             <span className="text-lg font-semibold text-foreground">
-              Ai Spec Kit
+              AI Spec Kit
             </span>
           </Link>
 

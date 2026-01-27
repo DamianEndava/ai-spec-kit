@@ -1,30 +1,27 @@
+import { Category } from "@/lib/constants";
+
 interface TechStack {
   frontend: string[];
   backend: string[];
   database: string[];
-  infra: string[];
+  infrastructure: string[];
 }
 
 export interface SpecDraft {
   context: string;
-  businessGoals: string[];
-  techStack: TechStack;
+  goals: string[];
+  technicalStack: TechStack;
 }
 
 interface Question {
   id: string;
-  category: "context" | "businessGoals" | "techStack";
+  category: Category;
   question: string;
-}
-interface AnsweredQuestion {
-  id: string;
-  answer: string;
 }
 
 export interface SpecResponse {
   specDraft: SpecDraft;
   questionsToAsk: Question[];
-  aswerQuestion?: AnsweredQuestion;
 }
 
 export interface ChatMessage {

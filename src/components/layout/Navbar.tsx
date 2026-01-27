@@ -21,21 +21,6 @@ const Navbar = () => {
               AI Spec Kit
             </span>
           </Link>
-
-          <div className="flex items-center gap-4">
-            <Link
-              href="/"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Home
-            </Link>
-            <Link
-              href="/analyze"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Analyze
-            </Link>
-          </div>
         </div>
       </main>
     </nav>
