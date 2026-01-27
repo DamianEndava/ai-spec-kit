@@ -15,16 +15,16 @@ export const generateMarkdown = (dataSpecDraft: SpecDraft) => {
     ## Context
     ${dataSpecDraft.context}
     ## Business Goals
-    ${dataSpecDraft.businessGoals.map((goal, i) => `${i + 1}. ${goal}`).join("\n")}
+    ${dataSpecDraft.goals.map((goal, i) => `${i + 1}. ${goal}`).join("\n")}
     ## Technical Stack
     ### Frontend
-    ${dataSpecDraft.techStack.frontend.map((t) => `- ${t}`).join("\n")}
+    ${dataSpecDraft.technicalStack.frontend.map((t) => `- ${t}`).join("\n")}
     ### Backend
-    ${dataSpecDraft.techStack.backend.map((t) => `- ${t}`).join("\n")}
+    ${dataSpecDraft.technicalStack.backend.map((t) => `- ${t}`).join("\n")}
     ### Database
-    ${dataSpecDraft.techStack.database.map((t) => `- ${t}`).join("\n")}
+    ${dataSpecDraft.technicalStack.database.map((t) => `- ${t}`).join("\n")}
     ### Infrastructure
-    ${dataSpecDraft.techStack.infra.map((t) => `- ${t}`).join("\n")}
+    ${dataSpecDraft.technicalStack.infrastructure.map((t) => `- ${t}`).join("\n")}
     `;
   return md;
 };

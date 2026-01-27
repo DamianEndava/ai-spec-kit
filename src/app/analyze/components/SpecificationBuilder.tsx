@@ -7,17 +7,18 @@ import { generateJSON, generateMarkdown } from "@/lib/utils";
 import SectionHeader from "./SectionHeader";
 
 const defaultSpecDraft: SpecDraft = {
-  context: "Eg.: A comprehensive software specification tool powered by AI",
+  businessContext:
+    "Eg.: A comprehensive software specification tool powered by AI",
   businessGoals: [
     "Eg.: Streamline specification creation process",
     "Eg.: Reduce time to create documentation",
     "Eg.: Improve project clarity and communication",
   ],
-  techStack: {
+  technicalStack: {
     frontend: ["Eg.: React", "Eg.: TypeScript", "Eg.: Tailwind CSS"],
     backend: ["Eg.: Node.js", "Eg.: Express", "Eg.: REST API"],
     database: ["Eg.: PostgreSQL", "Eg.: Redis"],
-    infra: ["Eg.: Docker", "Eg.: AWS", "Eg.: GitHub Actions"],
+    infrastructure: ["Eg.: Docker", "Eg.: AWS", "Eg.: GitHub Actions"],
   },
 };
 
@@ -31,8 +32,8 @@ const SpecificationBuilder = ({ result }: SpecificationBuilderProps) => {
     Record<string, boolean>
   >({
     context: true,
-    businessGoals: true,
-    techStack: true,
+    goals: true,
+    technicalStack: true,
   });
 
   const dataSpecDraft: SpecDraft = result?.specDraft || defaultSpecDraft;
@@ -70,16 +71,6 @@ const SpecificationBuilder = ({ result }: SpecificationBuilderProps) => {
     a.click();
     URL.revokeObjectURL(url);
   };
-
-  const techCategories: {
-    key: keyof typeof dataSpecDraft.techStack;
-    label: string;
-  }[] = [
-    { key: "frontend", label: "Frontend" },
-    { key: "backend", label: "Backend" },
-    { key: "database", label: "Database" },
-    { key: "infra", label: "Infrastructure" },
-  ];
 
   return (
     <div className="flex h-full flex-col">
@@ -143,82 +134,55 @@ const SpecificationBuilder = ({ result }: SpecificationBuilderProps) => {
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {/* Context Section */}
-        <div className="rounded-lg border border-border bg-card p-4">
-          <SectionHeader
-            title="Context"
-            sectionKey="context"
-            expandedSections={expandedSections}
-            toggleSection={toggleSection}
-          />
-          {expandedSections.context && (
-            <div className="mt-3 animate-fade-in">
-              <p className="text-sm text-foreground leading-relaxed">
-                {dataSpecDraft.context}
-              </p>
-            </div>
-          )}
-        </div>
-
-        {/* Business Goals Section */}
-        <div className="rounded-lg border border-border bg-card p-4">
-          <SectionHeader
-            title="Business Goals"
-            sectionKey="businessGoals"
-            expandedSections={expandedSections}
-            toggleSection={toggleSection}
-          />
-          {expandedSections.businessGoals && (
-            <div className="mt-3 space-y-2 animate-fade-in">
-              {dataSpecDraft.businessGoals.map((goal, index) => (
-                <div key={index} className="flex items-start gap-3">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent/10 text-xs font-medium text-accent">
-                    {index + 1}
-                  </span>
-                  <p className="text-sm text-foreground leading-relaxed pt-0.5">
-                    {goal}
-                  </p>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Tech Stack Section */}
-        <div className="rounded-lg border border-border bg-card p-4">
-          <SectionHeader
-            title="Tech Stack"
-            sectionKey="techStack"
-            expandedSections={expandedSections}
-            toggleSection={toggleSection}
-          />
-          {expandedSections.techStack && (
-            <div className="mt-3 space-y-3 animate-fade-in">
-              {techCategories.map(({ key, label }, categoryIndex) => (
-                <div key={key} className="flex items-start gap-3">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent/10 text-xs font-medium text-accent">
-                    {categoryIndex + 1}
-                  </span>
-                  <div className="flex-1">
-                    <h4 className="text-sm font-medium text-foreground mb-1">
-                      {label}
-                    </h4>
-                    <div className="space-y-0.5">
-                      {dataSpecDraft.techStack[key].map((tech, index) => (
-                        <p
-                          key={index}
-                          className="text-sm text-muted-foreground"
-                        >
-                          – {tech}
-                        </p>
-                      ))}
+        {Object.entries(dataSpecDraft).map(([sectionKey, sectionValue]) => (
+          <div
+            className="rounded-lg border border-border bg-card p-4"
+            key={sectionKey}
+          >
+            <SectionHeader
+              title={sectionKey
+                .replace(/([A-Z])/g, " $1")
+                .replace(/^./, (c) => c.toUpperCase())}
+              sectionKey={sectionKey}
+              expandedSections={expandedSections}
+              toggleSection={toggleSection}
+            />
+            {expandedSections[sectionKey] && (
+              <div className="mt-3 animate-fade-in space-y-2 text-sm text-foreground leading-relaxed">
+                {Array.isArray(sectionValue) ? (
+                  sectionValue.map((item, index) => (
+                    <p key={index} className="text-sm">
+                      – {item}
+                    </p>
+                  ))
+                ) : typeof sectionValue === "object" ? (
+                  Object.entries(sectionValue).map(([key, value]) => (
+                    <div key={key} className="flex items-start gap-3">
+                      <div className="flex-1">
+                        <div className="text-sm font-medium text-foreground mb-1">
+                          {key}
+                        </div>
+                        <div className="space-y-0.5">
+                          {Array.isArray(sectionValue[key]) ? (
+                            sectionValue[key].map((tech, index) => (
+                              <p key={index} className="text-sm">
+                                – {tech}
+                              </p>
+                            ))
+                          ) : (
+                            <p className="text-sm">{value as string}</p>
+                          )}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+                  ))
+                ) : (
+                  <p className="text-sm">{sectionValue as string}</p>
+                )}
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );

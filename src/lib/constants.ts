@@ -1,4 +1,8 @@
-type Category = "context" | "businessGoals" | "techStack";
+export const REQUIREMENT_LOCAL_STORAGE_KEY = "requirement_payload";
+
+export const CATEGORY_VALUES = ["context", "goals", "technicalStack"] as const;
+
+export type Category = (typeof CATEGORY_VALUES)[number];
 
 type CategoryGuideline = {
   category: Category;
@@ -22,7 +26,7 @@ export const CATEGORY_GUIDELINES: CategoryGuideline[] = [
     ],
   },
   {
-    category: "businessGoals",
+    category: "goals",
     shortDescription:
       "Define measurable business outcomes and success criteria so we can validate value delivery.",
     mustHave: [
@@ -35,7 +39,7 @@ export const CATEGORY_GUIDELINES: CategoryGuideline[] = [
     ],
   },
   {
-    category: "techStack",
+    category: "technicalStack",
     shortDescription:
       "Define technology constraints and preferences (or propose options) for frontend, backend, database, and infrastructure.",
     mustHave: [
@@ -60,20 +64,20 @@ export const SCHEMA_OPEN_AI = {
       additionalProperties: false,
       properties: {
         context: { type: "string" },
-        businessGoals: { type: "array", items: { type: "string" } },
-        techStack: {
+        goals: { type: "array", items: { type: "string" } },
+        technicalStack: {
           type: "object",
           additionalProperties: false,
           properties: {
             frontend: { type: "array", items: { type: "string" } },
             backend: { type: "array", items: { type: "string" } },
             database: { type: "array", items: { type: "string" } },
-            infra: { type: "array", items: { type: "string" } },
+            infrastructure: { type: "array", items: { type: "string" } },
           },
-          required: ["frontend", "backend", "database", "infra"],
+          required: ["frontend", "backend", "database", "infrastructure"],
         },
       },
-      required: ["context", "businessGoals", "techStack"],
+      required: CATEGORY_VALUES,
     },
     questionsToAsk: {
       type: "array",
@@ -84,7 +88,7 @@ export const SCHEMA_OPEN_AI = {
           id: { type: "string" },
           category: {
             type: "string",
-            enum: ["context", "businessGoals", "techStack"],
+            enum: CATEGORY_VALUES,
           },
           question: { type: "string" },
         },

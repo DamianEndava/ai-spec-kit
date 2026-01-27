@@ -1,5 +1,5 @@
 "use client";
-import { REQUIREMENT_LOCAL_STORAGE_KEY } from "@/lib/constans";
+import { REQUIREMENT_LOCAL_STORAGE_KEY } from "@/lib/constants";
 import { ChatMessage, SpecResponse } from "@/lib/types";
 import { useEffect, useState } from "react";
 import SpecificationBuilder from "./components/SpecificationBuilder";

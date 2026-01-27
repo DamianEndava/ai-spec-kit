@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { REQUIREMENT_LOCAL_STORAGE_KEY } from "@/lib/constans";
+import { REQUIREMENT_LOCAL_STORAGE_KEY } from "@/lib/constants";
 import { useRouter } from "next/navigation";
 import { SetStateAction, useState } from "react";
 import {
