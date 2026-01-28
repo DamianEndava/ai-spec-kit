@@ -23,7 +23,7 @@ const formatTime = (date: Date) => {
 
 interface ChatPanelProps {
   result: SpecResponse | null;
-  runPrompt: () => Promise<void>;
+  runPrompt: (userMessage: ChatMessage) => Promise<void>;
   error: string | null;
   loading: boolean;
   chatMessages: ChatMessage[];
@@ -48,7 +48,7 @@ const ChatPanel = ({
       timestamp: new Date(),
     };
     setChatMessages((prev) => [...prev, userMessage]);
-    runPrompt();
+    runPrompt(userMessage);
     setInputValue("");
   };
 

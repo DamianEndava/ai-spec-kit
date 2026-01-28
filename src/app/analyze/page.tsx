@@ -60,14 +60,14 @@ export default function AnalyzePage() {
     }
   }, [loading]);
 
-  async function runPrompt() {
+  async function runPrompt(chatMessage: ChatMessage) {
     setLoading(true);
     setError(null);
     const requirementsText = {
       ...result,
-      aswerQuestion: {
-        id: chatMessages[chatMessages.length - 1].questionId || "",
-        answer: chatMessages[chatMessages.length - 1].content,
+      answerQuestion: {
+        id: chatMessage.questionId || "",
+        answer: chatMessage.content,
       },
     };
 
@@ -80,7 +80,6 @@ export default function AnalyzePage() {
 
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error ?? "Request failed");
-      console.log("resp data: ", data);
 
       setResult(data);
       if (data?.questionsToAsk[0]) {
