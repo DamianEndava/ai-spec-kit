@@ -20,7 +20,7 @@ export function getRequirementsUserTextPrompt(
     "Unstructured requirements:\n" +
     requirementsText +
     "\n\nCategory guidelines for generating questions (shortDescription + mustHave checklist):\n" +
-    JSON.stringify(categoryGuidelines, null, 2) +
+    JSON.stringify(categoryGuidelines) +
     "\n\nOutput requirements:\n" +
     "- Return ONLY valid JSON matching the schema.\n" +
     "- Fill specDraft only with information supported by the input.\n" +
@@ -42,7 +42,7 @@ export async function POST(req: Request) {
     }
 
     const resp = await client.responses.create({
-      model: "gpt-5",
+      model: "gpt-4.1-mini",
       input: [
         {
           role: "system",

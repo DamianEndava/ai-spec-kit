@@ -17,9 +17,10 @@ export const ANALYZE_SYSTEM_PROMPT =
   "Only delete the answered one and keep the rest as-is (except you may remove questions that are now answered by the new information).";
 
 function getAnalyzeUserTextPrompt(requirementsText: any): string {
+  console.log(requirementsText);
   return (
     "Previously generated JSON (schema-compliant) with Answered question:\n" +
-    JSON.stringify(requirementsText, null, 2) +
+    JSON.stringify(requirementsText) +
     "\n\nOutput requirements:\n" +
     "- Return ONLY valid JSON matching the schema.\n" +
     "- Update specDraft with information supported by the provided answer, you can add new information or overwrite existing fields.\n" +
@@ -43,7 +44,7 @@ export async function POST(req: Request) {
     }
 
     const resp = await client.responses.create({
-      model: "gpt-5",
+      model: "gpt-4.1-mini",
       input: [
         {
           role: "system",
