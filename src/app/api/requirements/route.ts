@@ -10,7 +10,7 @@ export const REQUIREMENTS_SYSTEM_PROMPT =
   "(1) Ask only questions that are NOT answered in the input text. " +
   "(2) Questions must be specific and actionable (no generic 'please clarify'). " +
   "(3) Ensure IDs are unique and follow q-<category>-<number>, numbering starts at 1 per category. " +
-  "(4) Add 2 question per category IF there are meaningful gaps; otherwise 0 for that category.";
+  "(4) Add 3 questions per category IF there are meaningful gaps; otherwise 0 for that category.";
 
 export function getRequirementsUserTextPrompt(
   requirementsText: any,

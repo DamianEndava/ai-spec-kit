@@ -7,9 +7,8 @@ import { generateJSON, generateMarkdown } from "@/lib/utils";
 import SectionHeader from "./SectionHeader";
 
 const defaultSpecDraft: SpecDraft = {
-  businessContext:
-    "Eg.: A comprehensive software specification tool powered by AI",
-  businessGoals: [
+  context: "Eg.: A comprehensive software specification tool powered by AI",
+  goals: [
     "Eg.: Streamline specification creation process",
     "Eg.: Reduce time to create documentation",
     "Eg.: Improve project clarity and communication",
@@ -160,7 +159,9 @@ const SpecificationBuilder = ({ result }: SpecificationBuilderProps) => {
                     <div key={key} className="flex items-start gap-3">
                       <div className="flex-1">
                         <div className="text-sm font-medium text-foreground mb-1">
-                          {key}
+                          {key
+                            .replace(/([A-Z])/g, " $1")
+                            .replace(/^./, (c) => c.toUpperCase())}
                         </div>
                         <div className="space-y-0.5">
                           {Array.isArray(sectionValue[key]) ? (
