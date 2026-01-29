@@ -53,7 +53,7 @@ export default function HomePage() {
       <div className="container py-12 md:py-20">
         {/* Hero Section */}
         <div className="mb-16 text-center animate-fade-in">
-          <h1 className="mb-4 text-4xl font-bold tracking-tight text-foreground md:text-5xl lg:text-6xl">
+          <h1 className="mb-4 text-4xl font-bold tracking-tight text-primary md:text-5xl lg:text-6xl">
             Build Better <span className="text-accent">Specifications</span>
           </h1>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground">

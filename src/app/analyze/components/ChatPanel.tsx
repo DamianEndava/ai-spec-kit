@@ -9,7 +9,7 @@ import {
   RotateCw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ChatMessage, SpecResponse } from "@/lib/types";
+import { ChatMessage } from "@/lib/types";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -22,10 +22,8 @@ const formatTime = (date: Date) => {
 };
 
 interface ChatPanelProps {
-  result: SpecResponse | null;
   runPrompt: (userMessage: ChatMessage) => Promise<void>;
   error: string | null;
-  loading: boolean;
   chatMessages: ChatMessage[];
   setChatMessages: Dispatch<SetStateAction<ChatMessage[]>>;
 }

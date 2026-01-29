@@ -10,7 +10,7 @@ export const generateJSON = (dataSpecDraft: SpecDraft) => {
   return JSON.stringify(dataSpecDraft, null, 2);
 };
 
-const formatMarkdownKey = (key: string) => {
+export const formatKey = (key: string) => {
   const withSpaces = key
     .replace(/_/g, " ")
     .replace(/([a-z0-9])([A-Z])/g, "$1 $2");
@@ -26,7 +26,7 @@ export const generateMarkdown = (
   const render = (value: unknown, depth: number, key?: string) => {
     const headingLevel = Math.min(depth, 6);
     const heading = key
-      ? `${"#".repeat(headingLevel)} ${formatMarkdownKey(key)}`
+      ? `${"#".repeat(headingLevel)} ${formatKey(key)}`
       : null;
 
     if (heading) {

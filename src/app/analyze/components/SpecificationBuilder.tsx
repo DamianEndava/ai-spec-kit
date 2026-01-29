@@ -3,7 +3,7 @@ import { FileJson, FileText, Download, Clipboard, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { SpecDraft, SpecResponse } from "@/lib/types";
-import { generateJSON, generateMarkdown } from "@/lib/utils";
+import { formatKey, generateJSON, generateMarkdown } from "@/lib/utils";
 import SectionHeader from "./SectionHeader";
 
 const defaultSpecDraft: SpecDraft = {
@@ -139,9 +139,7 @@ const SpecificationBuilder = ({ result }: SpecificationBuilderProps) => {
             key={sectionKey}
           >
             <SectionHeader
-              title={sectionKey
-                .replace(/([A-Z])/g, " $1")
-                .replace(/^./, (c) => c.toUpperCase())}
+              title={formatKey(sectionKey)}
               sectionKey={sectionKey}
               expandedSections={expandedSections}
               toggleSection={toggleSection}
@@ -159,9 +157,7 @@ const SpecificationBuilder = ({ result }: SpecificationBuilderProps) => {
                     <div key={key} className="flex items-start gap-3">
                       <div className="flex-1">
                         <div className="text-sm font-medium text-foreground mb-1">
-                          {key
-                            .replace(/([A-Z])/g, " $1")
-                            .replace(/^./, (c) => c.toUpperCase())}
+                          {formatKey(key)}
                         </div>
                         <div className="space-y-0.5">
                           {Array.isArray(sectionValue[key]) ? (
