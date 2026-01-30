@@ -23,6 +23,7 @@ const formatTime = (date: Date) => {
 
 interface ChatPanelProps {
   runPrompt: (userMessage: ChatMessage) => Promise<void>;
+  generateMoreQuestions(): Promise<void>;
   error: string | null;
   chatMessages: ChatMessage[];
   setChatMessages: Dispatch<SetStateAction<ChatMessage[]>>;
@@ -30,6 +31,7 @@ interface ChatPanelProps {
 
 const ChatPanel = ({
   runPrompt,
+  generateMoreQuestions,
   error,
   chatMessages,
   setChatMessages,
@@ -59,6 +61,8 @@ const ChatPanel = ({
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {chatMessages.map((message) => {
+          const isAI = message.sender === "ai";
+
           return (
             <div
               key={`${message.id}+${message.sender}`}
@@ -69,10 +73,10 @@ const ChatPanel = ({
               {/* Avatar */}
               <div
                 className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${
-                  message.sender === "ai" ? "bg-secondary" : "bg-primary"
+                  isAI ? "bg-secondary" : "bg-primary"
                 }`}
               >
-                {message.sender === "ai" ? (
+                {isAI ? (
                   <Sparkles className="h-4 w-4 text-muted-foreground" />
                 ) : (
                   <User className="h-4 w-4 text-primary-foreground" />
@@ -82,7 +86,7 @@ const ChatPanel = ({
               {/* Message Bubble */}
               <div
                 className={`group relative max-w-[80%] rounded-2xl px-4 py-3 ${
-                  message.sender === "ai"
+                  isAI
                     ? "bg-secondary text-foreground rounded-tl-md"
                     : "bg-primary text-primary-foreground rounded-tr-md"
                 }`}
@@ -100,7 +104,7 @@ const ChatPanel = ({
                 </div>
                 <div
                   className={`mt-1 flex items-center gap-2 text-xs ${
-                    message.sender === "ai"
+                    isAI
                       ? "text-muted-foreground"
                       : "text-primary-foreground/70"
                   }`}
@@ -108,8 +112,21 @@ const ChatPanel = ({
                   <span>{formatTime(message.timestamp)}</span>
                 </div>
 
+                {isAI && message.questionId === "no-more-questions" && (
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      type="button"
+                      onClick={() => generateMoreQuestions()}
+                    >
+                      Generate more questions
+                    </Button>
+                  </div>
+                )}
+
                 {/* Copy button for AI messages */}
-                {message.sender === "ai" && (
+                {isAI && (
                   <button
                     onClick={() => handleCopy(message.content)}
                     className="absolute -left-2 top-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100"

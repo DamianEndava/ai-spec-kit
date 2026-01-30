@@ -82,6 +82,48 @@ export default function AnalyzePage() {
       if (!res.ok) throw new Error(data?.error ?? "Request failed");
 
       setResult(data);
+      const aiMessage: ChatMessage = {
+        id: Date.now().toString(),
+        questionId: data.questionsToAsk[0]?.id,
+        content: data.questionsToAsk[0]?.question,
+        sender: "ai",
+        timestamp: new Date(),
+      };
+
+      const exists = chatMessages.some(
+        (msg) => msg.id === aiMessage.id && msg.sender === aiMessage.sender,
+      );
+
+      if (exists) return; // skip duplicate
+
+      setChatMessages((prev) => [...prev, aiMessage]);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (e: any) {
+      setError(e.message ?? "Error");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function generateMoreQuestions() {
+    setLoading(true);
+    setError(null);
+
+    const requirementsText = {
+      ...result,
+    };
+
+    try {
+      const res = await fetch("/api/moreDetails", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ requirementsText: requirementsText }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error ?? "Request failed");
+
+      setResult(data);
       if (data?.questionsToAsk[0]) {
         const aiMessage: ChatMessage = {
           id: Date.now().toString(),
@@ -128,10 +170,9 @@ export default function AnalyzePage() {
         {/* Right Section - Chat Panel */}
         <div className="h-[50vh] lg:h-[calc(100vh-6rem)] lg:w-1/2 overflow-hidden">
           <ChatPanel
-            result={result}
             runPrompt={runPrompt}
+            generateMoreQuestions={generateMoreQuestions}
             error={error}
-            loading={loading}
             chatMessages={chatMessages}
             setChatMessages={setChatMessages}
           />
