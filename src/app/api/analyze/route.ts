@@ -17,7 +17,6 @@ export const ANALYZE_SYSTEM_PROMPT =
   "Only delete the answered one and keep the rest as-is (except you may remove questions that are now answered by the new information).";
 
 function getAnalyzeUserTextPrompt(requirementsText: any): string {
-  console.log(requirementsText);
   return (
     "Previously generated JSON (schema-compliant) with Answered question:\n" +
     JSON.stringify(requirementsText) +
