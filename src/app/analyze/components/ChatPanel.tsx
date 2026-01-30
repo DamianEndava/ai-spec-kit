@@ -41,7 +41,7 @@ const ChatPanel = ({
 
   // Scroll to bottom when chatMessages change
   useEffect(() => {
-    if (messagesEndRef.current) {
+    if (messagesEndRef.current?.scrollIntoView) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [chatMessages]);
