@@ -20,9 +20,36 @@ export default function HomePage() {
   const [showTextarea, setShowTextarea] = useState(false);
   const [specificationText, setSpecificationText] = useState("");
 
-  // TODO : implement PDF download
-  const handleDownloadPDF = () => {
-    console.log("Not ready jet");
+  const [file, setFile] = useState<File | null>(null);
+  const [showUploadForm, setShowUploadForm] = useState(false);
+
+  const handleDownloadPDF = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!file) {
+      setError("Select a PDF first");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await fetch("/api/uploadRequirements", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Something went wrong");
+      localStorage.setItem(REQUIREMENT_LOCAL_STORAGE_KEY, JSON.stringify(data));
+      router.push("/analyze");
+    } catch (err: any) {
+      setError(err.message || "Request failed");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSendSpecification = async () => {
@@ -66,7 +93,7 @@ export default function HomePage() {
         <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
           {/* Tile 1 - Requirements PDF */}
           <div
-            onClick={handleDownloadPDF}
+            // onClick={handleDownloadPDF}
             className="group cursor-pointer rounded-xl border border-border bg-card p-8 shadow-sm transition-all duration-300 hover:border-accent/50 hover:shadow-lg hover:shadow-accent/5"
           >
             <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-secondary transition-colors group-hover:bg-accent/10">
@@ -79,13 +106,65 @@ export default function HomePage() {
               Download a structured PDF template to help you organize your
               project requirements.
             </p>
-            <Button
-              variant="outline"
-              className="group-hover:border-accent group-hover:text-accent"
-            >
-              Download requirements (PDF)
-              <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Button>
+            {!showUploadForm && (
+              <Button
+                variant="outline"
+                className="group-hover:border-accent group-hover:text-accent"
+                type="button"
+                onClick={() => setShowUploadForm(true)}
+              >
+                Download requirements (PDF)
+                <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Button>
+            )}
+            {showUploadForm && (
+              <form
+                onSubmit={handleDownloadPDF}
+                className="space-y-4 animate-fade-in"
+              >
+                {/* File Upload */}
+                <label
+                  htmlFor="pdf-upload"
+                  className="flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-border bg-background px-4 py-6 text-center transition-all hover:border-accent hover:bg-accent/5"
+                >
+                  <FileDown className="mb-2 h-6 w-6 text-muted-foreground" />
+                  <span className="text-sm font-medium text-foreground">
+                    {file ? file.name : "Click to upload a PDF"}
+                  </span>
+                  <span className="mt-1 text-xs text-muted-foreground">
+                    PDF files only
+                  </span>
+
+                  <input
+                    id="pdf-upload"
+                    type="file"
+                    accept="application/pdf"
+                    className="hidden"
+                    onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+                  />
+                </label>
+
+                {/* Submit */}
+                <Button
+                  variant="outline"
+                  type="submit"
+                  disabled={loading || !file}
+                  className="w-full border-accent bg-accent text-accent-foreground hover:bg-accent/90 disabled:opacity-60"
+                >
+                  {loading ? (
+                    <>
+                      <Loader className="mr-2 h-4 w-4 animate-spin" />
+                      Analyzing PDF…
+                    </>
+                  ) : (
+                    <>
+                      <Send className="mr-2 h-4 w-4" />
+                      Upload & Analyze
+                    </>
+                  )}
+                </Button>
+              </form>
+            )}
           </div>
 
           {/* Tile 2 - Specification Input */}
