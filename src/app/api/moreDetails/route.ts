@@ -1,7 +1,7 @@
 import { CATEGORY_GUIDELINES, SCHEMA_OPEN_AI } from "@/lib/constants";
 import OpenAI from "openai";
 
-export const ANALYZE_SYSTEM_PROMPT =
+const ANALYZE_SYSTEM_PROMPT =
   "You are a senior Business Analyst in a software development team. " +
   "You will receive a previously generated JSON that matches the schema, plus a single answer to one question. " +
   "Do NOT invent facts. If unknown: context='', arrays=[]. " +
