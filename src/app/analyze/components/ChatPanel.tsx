@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ChatMessage } from "@/lib/types";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState, useEffect, useRef } from "react";
 import { Textarea } from "@/components/ui/textarea";
 
 const formatTime = (date: Date) => {
@@ -37,6 +37,14 @@ const ChatPanel = ({
   setChatMessages,
 }: ChatPanelProps) => {
   const [inputValue, setInputValue] = useState("");
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  // Scroll to bottom when chatMessages change
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [chatMessages]);
 
   const saveUserResponse = () => {
     if (!inputValue.trim()) return;
@@ -157,6 +165,8 @@ const ChatPanel = ({
             </button>
           </div>
         )}
+        {/* Dummy div for scroll-to-bottom */}
+        <div ref={messagesEndRef} />
       </div>
 
       {/* Input Area */}
