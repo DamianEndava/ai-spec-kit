@@ -81,22 +81,36 @@ export default function AnalyzePage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error ?? "Request failed");
 
+      localStorage.setItem(REQUIREMENT_LOCAL_STORAGE_KEY, JSON.stringify(data));
       setResult(data);
-      const aiMessage: ChatMessage = {
-        id: Date.now().toString(),
-        questionId: data.questionsToAsk[0]?.id,
-        content: data.questionsToAsk[0]?.question,
-        sender: "ai",
-        timestamp: new Date(),
-      };
+      if (data?.questionsToAsk[0]) {
+        const aiMessage: ChatMessage = {
+          id: Date.now().toString(),
+          questionId: data.questionsToAsk[0]?.id,
+          content: data.questionsToAsk[0]?.question,
+          sender: "ai",
+          timestamp: new Date(),
+        };
 
-      const exists = chatMessages.some(
-        (msg) => msg.id === aiMessage.id && msg.sender === aiMessage.sender,
-      );
+        const exists = chatMessages.some(
+          (msg) => msg.id === aiMessage.id && msg.sender === aiMessage.sender,
+        );
 
-      if (exists) return; // skip duplicate
+        if (exists) return; // skip duplicate
 
-      setChatMessages((prev) => [...prev, aiMessage]);
+        setChatMessages((prev) => [...prev, aiMessage]);
+      } else {
+        const aiMessage: ChatMessage = {
+          id: Date.now().toString(),
+          questionId: "no-more-questions",
+          content:
+            "That was the last question. You have completed the analysis.",
+          sender: "ai",
+          timestamp: new Date(),
+        };
+        setChatMessages((prev) => [...prev, aiMessage]);
+      }
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       setError(e.message ?? "Error");
@@ -123,6 +137,7 @@ export default function AnalyzePage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error ?? "Request failed");
 
+      localStorage.setItem(REQUIREMENT_LOCAL_STORAGE_KEY, JSON.stringify(data));
       setResult(data);
       if (data?.questionsToAsk[0]) {
         const aiMessage: ChatMessage = {
