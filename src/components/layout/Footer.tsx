@@ -23,7 +23,7 @@ const Footer = () => {
           </Link>
 
           <p className="text-sm text-muted-foreground">
-            © 2026 Ai Spec Kit. All rights reserved.
+            © 2026 AI Spec Kit. All rights reserved.
           </p>
         </div>
       </main>

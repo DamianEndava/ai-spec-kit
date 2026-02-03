@@ -15,23 +15,29 @@ import { Textarea } from "@/components/ui/textarea";
 export default function HomePage() {
   const router = useRouter();
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [showTextarea, setShowTextarea] = useState(false);
   const [specificationText, setSpecificationText] = useState("");
+  const [isSpecificationLoading, setIsSpecificationLoading] = useState(false);
+  const [specificationErrorMsg, setSpecificationErrorMsg] = useState<
+    string | null
+  >(null);
 
-  const [file, setFile] = useState<File | null>(null);
   const [showUploadForm, setShowUploadForm] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
+  const [isFileUploadInProgress, setIsFileUploadInProgress] = useState(false);
+  const [fileUploadErrorMsg, setFileUploadErrorMsg] = useState<string | null>(
+    null,
+  );
 
-  const handleDownloadPDF = async (e: React.FormEvent) => {
+  const handleUploadPDF = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!file) {
-      setError("Select a PDF first");
+    if (!file || file.type !== "application/pdf") {
+      setFileUploadErrorMsg("Select a PDF first");
       return;
     }
 
-    setLoading(true);
-    setError(null);
+    setIsFileUploadInProgress(true);
+    setFileUploadErrorMsg(null);
 
     const formData = new FormData();
     formData.append("file", file);
@@ -45,16 +51,20 @@ export default function HomePage() {
       if (!res.ok) throw new Error(data.error || "Something went wrong");
       localStorage.setItem(REQUIREMENT_LOCAL_STORAGE_KEY, JSON.stringify(data));
       router.push("/analyze");
-    } catch (err: any) {
-      setError(err.message || "Request failed");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setFileUploadErrorMsg(err.message || "Request failed");
+      } else {
+        setFileUploadErrorMsg("Request failed");
+      }
     } finally {
-      setLoading(false);
+      setIsFileUploadInProgress(false);
     }
   };
 
   const handleSendSpecification = async () => {
-    setLoading(true);
-    setError(null);
+    setIsSpecificationLoading(true);
+    setSpecificationErrorMsg(null);
 
     try {
       const res = await fetch("/api/requirements", {
@@ -69,9 +79,9 @@ export default function HomePage() {
       router.push("/analyze");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
-      setError(e.message ?? "Error");
+      setSpecificationErrorMsg(e.message ?? "Error");
     } finally {
-      setLoading(false);
+      setIsSpecificationLoading(false);
     }
   };
 
@@ -92,20 +102,22 @@ export default function HomePage() {
         {/* Tiles Section */}
         <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
           {/* Tile 1 - Requirements PDF */}
-          <div
-            // onClick={handleDownloadPDF}
-            className="group cursor-pointer rounded-xl border border-border bg-card p-8 shadow-sm transition-all duration-300 hover:border-accent/50 hover:shadow-lg hover:shadow-accent/5"
-          >
+          <div className="group cursor-pointer rounded-xl border border-border bg-card p-8 shadow-sm transition-all duration-300 hover:border-accent/50 hover:shadow-lg hover:shadow-accent/5">
             <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-secondary transition-colors group-hover:bg-accent/10">
               <FileDown className="h-7 w-7 text-muted-foreground transition-colors group-hover:text-accent" />
             </div>
             <h2 className="mb-2 text-xl font-semibold text-foreground">
-              Requirements Template
+              Requirements Upload
             </h2>
             <p className="mb-6 text-muted-foreground">
-              Download a structured PDF template to help you organize your
-              project requirements.
+              Upload a structured PDF to help you organize your project
+              requirements.
             </p>
+            {fileUploadErrorMsg && (
+              <p style={{ color: "crimson", marginTop: 16 }}>
+                {fileUploadErrorMsg}
+              </p>
+            )}
             {!showUploadForm && (
               <Button
                 variant="outline"
@@ -113,13 +125,13 @@ export default function HomePage() {
                 type="button"
                 onClick={() => setShowUploadForm(true)}
               >
-                Download requirements (PDF)
+                Upload requirements (PDF)
                 <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
             )}
             {showUploadForm && (
               <form
-                onSubmit={handleDownloadPDF}
+                onSubmit={handleUploadPDF}
                 className="space-y-4 animate-fade-in"
               >
                 {/* File Upload */}
@@ -148,10 +160,10 @@ export default function HomePage() {
                 <Button
                   variant="outline"
                   type="submit"
-                  disabled={loading || !file}
+                  disabled={isFileUploadInProgress || !file}
                   className="w-full border-accent bg-accent text-accent-foreground hover:bg-accent/90 disabled:opacity-60"
                 >
-                  {loading ? (
+                  {isFileUploadInProgress ? (
                     <>
                       <Loader className="mr-2 h-4 w-4 animate-spin" />
                       Analyzing PDF…
@@ -186,8 +198,10 @@ export default function HomePage() {
               Describe your project and let AI help you create a comprehensive
               specification.
             </p>
-            {error && (
-              <p style={{ color: "crimson", marginTop: 16 }}>{error}</p>
+            {specificationErrorMsg && (
+              <p style={{ color: "crimson", marginTop: 16 }}>
+                {specificationErrorMsg}
+              </p>
             )}
             {!showTextarea ? (
               <Button
@@ -206,14 +220,13 @@ export default function HomePage() {
                     target: { value: SetStateAction<string> };
                   }) => setSpecificationText(e.target.value)}
                   className="min-h-[120px] resize-none border-border bg-background focus:border-accent focus:ring-accent"
-                  onClick={(e) => e.stopPropagation()}
                 />
                 <Button
                   onClick={handleSendSpecification}
-                  disabled={!specificationText.trim() || loading}
+                  disabled={!specificationText.trim() || isSpecificationLoading}
                   className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
                 >
-                  {loading ? (
+                  {isSpecificationLoading ? (
                     <>
                       <Loader className="mr-2 h-4 w-4 animate-spin" />
                       Sending...
