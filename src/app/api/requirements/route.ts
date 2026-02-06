@@ -1,4 +1,4 @@
-import { CATEGORY_GUIDELINES, SCHEMA_OPEN_AI } from "@/lib/constants";
+import { CATEGORY_GUIDELINES, MODEL, SCHEMA_OPEN_AI } from "@/lib/constants";
 import OpenAI from "openai";
 
 export const REQUIREMENTS_SYSTEM_PROMPT =
@@ -42,7 +42,7 @@ export async function POST(req: Request) {
     }
 
     const resp = await client.responses.create({
-      model: "gpt-4.1-mini",
+      model: MODEL,
       input: [
         {
           role: "system",

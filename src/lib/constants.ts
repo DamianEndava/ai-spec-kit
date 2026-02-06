@@ -18,11 +18,11 @@ export const CATEGORY_GUIDELINES: CategoryGuideline[] = [
     mustHave: [
       "Problem statement and current pain points",
       "Target users / roles / personas",
-      //   "In-scope and out-of-scope boundaries",
-      //   "Key workflows / scenarios (happy path + exceptions)",
-      //   "Dependencies on other systems/processes",
-      //   "Constraints (legal, data residency, internal policies)",
-      //   "Assumptions and risks",
+      "In-scope and out-of-scope boundaries",
+      "Key workflows / scenarios (happy path + exceptions)",
+      "Dependencies on other systems/processes",
+      "Constraints (legal, data residency, internal policies)",
+      "Assumptions and risks",
     ],
   },
   {
@@ -32,10 +32,10 @@ export const CATEGORY_GUIDELINES: CategoryGuideline[] = [
     mustHave: [
       "Top business goals (outcomes, not features)",
       "Success metrics / KPIs and target values",
-      //   "Priorities / ordering of goals",
-      //   "Stakeholders and decision makers",
-      //   "Time constraints / milestones",
-      //   "Definition of done for MVP vs later phases",
+      "Priorities / ordering of goals",
+      "Stakeholders and decision makers",
+      "Time constraints / milestones",
+      "Definition of done for MVP vs later phases",
     ],
   },
   {
@@ -45,12 +45,12 @@ export const CATEGORY_GUIDELINES: CategoryGuideline[] = [
     mustHave: [
       "Frontend constraints/preferences (framework, UI library, browser support)",
       "Backend constraints/preferences (language, framework, API style)",
-      //   "Database needs (relational vs NoSQL, volume, consistency, reporting)",
-      //   "Infra/hosting constraints (cloud provider, regions, on-prem, containers)",
-      //   "Security requirements (authN/authZ, encryption, secrets management)",
-      //   "Integrations (SSO, CRM/ERP, payments, messaging, analytics)",
-      //   "Non-functional requirements impacting tech (performance, availability, scalability)",
-      //   "Operational requirements (monitoring, logging, CI/CD)",
+      "Database needs (relational vs NoSQL, volume, consistency, reporting)",
+      "Infra/hosting constraints (cloud provider, regions, on-prem, containers)",
+      "Security requirements (authN/authZ, encryption, secrets management)",
+      "Integrations (SSO, CRM/ERP, payments, messaging, analytics)",
+      "Non-functional requirements impacting tech (performance, availability, scalability)",
+      "Operational requirements (monitoring, logging, CI/CD)",
     ],
   },
 ];
@@ -98,3 +98,5 @@ export const SCHEMA_OPEN_AI = {
   },
   required: ["specDraft", "questionsToAsk"],
 } as const;
+
+export const MODEL = "gpt-4.1-mini";
