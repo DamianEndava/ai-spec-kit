@@ -136,3 +136,5 @@ export const SCHEMA_OPEN_AI = {
   },
   required: ["specDraft", "questionsToAsk"],
 } as const;
+
+export const MODEL = "gpt-4.1-mini";
