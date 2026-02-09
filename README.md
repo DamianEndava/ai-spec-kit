@@ -12,6 +12,24 @@ pnpm dev
 bun dev
 ```
 
+## Features
+
+- Enter requirements as free text to generate a structured specification draft.
+- Upload a requirements PDF for AI-assisted extraction and structuring.
+- Guided Q&A flow to fill missing details and refine the spec.
+- Live specification builder with collapsible sections.
+- Export or copy the spec as Markdown or JSON.
+- Resume analysis from the last session using local storage.
+- Specification configuration lives in [src/lib/constants.ts](src/lib/constants.ts); update `CATEGORY_GUIDELINES` and the schema to adapt to different business cases.
+
+## Configuration
+
+The specification model is defined in [src/lib/constants.ts](src/lib/constants.ts). To adapt the app to new business cases:
+
+- Update `CATEGORY_VALUES` to add or remove top-level sections.
+- Edit `CATEGORY_GUIDELINES` to control what questions are generated per category.
+- Keep `SCHEMA_OPEN_AI` in sync with the categories so the AI output matches your structure.
+
 ## Requirements examples
 
 # example 1 - new system
