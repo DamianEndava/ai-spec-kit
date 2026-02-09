@@ -32,7 +32,7 @@ The specification model is defined in [src/lib/constants.ts](src/lib/constants.t
 
 ## Requirements examples
 
-# example 1 - new system
+### example 1 - new system
 
 The company operates a chain of urban grocery stores and wants to reduce food waste while improving product availability.
 Currently, stock decisions are made manually and often lead to overstocking or empty shelves.
@@ -45,13 +45,13 @@ The backend will be implemented using Java with Spring Boot.
 Data will be stored in PostgreSQL and processed using Python-based machine learning services.
 The frontend will be a React web application hosted on a cloud platform (AWS).
 
-# example 2 - frontend migration
+### example 2 - frontend migration
 
 Migrate the current jQuery-based application to Next.js to reduce technical debt, improve developer productivity, and support future product growth.
 
 Migrate the existing application from jQuery to Next.js to modernize the frontend architecture, improve maintainability, and enable better performance and scalability.
 
-# example 3 - mobile app
+### example 3 - mobile app
 
 Short application description (EN)
 
